@@ -1,0 +1,39 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    # Akan berjalan pada PR ke main/master
+    branches: [ main, master ]
+  schedule:
+    - cron: '0 3 * * 0'   # mingguan, bisa dihapus atau disesuaikan
+
+jobs:
+  analyze:
+    name: Analyze (CodeQL)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: python
+          # Memakai paket query bawaan: security-and-quality (file level)
+          queries: security-and-quality
+
+      # Jika project memerlukan build step (native extensions, compile step, dll)
+      # aktifkan autobuild. Untuk pure Python biasanya tidak wajib tapi tidak apa-apa.
+      - name: Build (autodetect)
+        uses: github/codeql-action/autobuild@v2
+        # jika perlu langkah build manual, ganti dengan command shell:
+        # run: |
+        #   python -m pip install -r requirements.txt
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          # Fail the job on errors from CodeQL (default true). Dapat disesuaikan.
+          fail-on-error: true
