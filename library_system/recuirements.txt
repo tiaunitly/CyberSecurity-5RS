@@ -1,0 +1,2 @@
+flask==0.10   # versi lama & insecure
+sqlite3       # built-in, tapi untuk contoh
