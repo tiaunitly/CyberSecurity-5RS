@@ -1,0 +1,23 @@
+name: "Dependency Review"
+
+on:
+  pull_request:
+    branches: [ main, master ]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          # Kalau ada dependency yang punya severity tertentu, PR akan gagal
+          fail-on-severity: high
+          # Bisa juga diatur: low | moderate | high | critical
+          # Atur sesuai kebutuhanmu
